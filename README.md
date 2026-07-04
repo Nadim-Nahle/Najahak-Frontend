@@ -14,12 +14,17 @@ one through the workflow: `New -> In Progress -> Done`.
 
 ## Architecture
 
-api/ -> typed fetch wrappers, one function per backend endpoint (client.ts is the shared base)
-hooks/ -> TanStack Query hooks (useLogin, useRequests, useCreateRequest, useUpdateRequestStatus...)
-context/ -> AuthContext, holds the logged-in user, persists token to localStorage
-types/ -> shared TypeScript types, mirroring the backend's data shapes
-components/ -> reusable UI pieces (RequestsTable, StatusBadge, Modal, CreateRequestForm)
-pages/ -> route-level pages (LoginPage, RegisterPage, DashboardPage)
+- api/ -> typed fetch wrappers, one function per backend endpoint (client.ts is the shared base)
+
+- hooks/ -> TanStack Query hooks (useLogin, useRequests, useCreateRequest, useUpdateRequestStatus...)
+
+- context/ -> AuthContext, holds the logged-in user, persists token to localStorage
+
+- types/ -> shared TypeScript types, mirroring the backend's data shapes
+
+- components/ -> reusable UI pieces (RequestsTable, StatusBadge, Modal, CreateRequestForm)
+
+- pages/ -> route-level pages (LoginPage, RegisterPage, DashboardPage)
 
 ## Live Deployment
 
