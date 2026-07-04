@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 import { ApiClientError } from "../api/client";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const login = useLogin();
 
@@ -13,9 +14,7 @@ export function LoginPage() {
     e.preventDefault();
     login.mutate(
       { email, password },
-      {
-        onSuccess: () => navigate("/dashboard"),
-      },
+      { onSuccess: () => navigate("/dashboard") },
     );
   }
 
@@ -50,13 +49,22 @@ export function LoginPage() {
         <label className="mb-1 block text-sm font-medium text-slate-700">
           Password
         </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="mb-6 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
-        />
+        <div className="relative mb-6">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full rounded-md border border-slate-300 px-3 py-2 pr-14 text-sm focus:border-indigo-500 focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute inset-y-0 right-0 px-3 text-xs font-medium text-slate-500 hover:text-slate-700"
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
 
         <button
           type="submit"
@@ -65,6 +73,16 @@ export function LoginPage() {
         >
           {login.isPending ? "Signing in..." : "Sign in"}
         </button>
+
+        <p className="mt-4 text-center text-sm text-slate-500">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="font-medium text-indigo-600 hover:underline"
+          >
+            Create one
+          </Link>
+        </p>
       </form>
     </div>
   );
