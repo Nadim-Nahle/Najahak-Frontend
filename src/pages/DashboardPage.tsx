@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { RequestsTable } from "../components/RequestsTable";
 import { CreateRequestForm } from "../components/CreateRequestForm";
+import { Modal } from "../components/Modal";
 
 export function DashboardPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   function handleLogout() {
     logout();
@@ -30,11 +33,27 @@ export function DashboardPage() {
       </header>
 
       <main className="p-8">
-        <CreateRequestForm />
         <div className="rounded-lg border border-slate-200 bg-white p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-slate-800">Requests</h2>
+            <button
+              onClick={() => setIsCreateOpen(true)}
+              className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
+            >
+              + New request
+            </button>
+          </div>
           <RequestsTable />
         </div>
       </main>
+
+      <Modal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        title="New client request"
+      >
+        <CreateRequestForm onCreated={() => setIsCreateOpen(false)} />
+      </Modal>
     </div>
   );
 }
