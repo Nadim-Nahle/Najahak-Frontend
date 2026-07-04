@@ -21,6 +21,13 @@ types/ -> shared TypeScript types, mirroring the backend's data shapes
 components/ -> reusable UI pieces (RequestsTable, StatusBadge, Modal, CreateRequestForm)
 pages/ -> route-level pages (LoginPage, RegisterPage, DashboardPage)
 
+## Live Deployment
+
+- **App:** https://najahak-frontend.vercel.app/
+- **Test account:** `test@test.com` / `123456` (or use the "Create one" link on the login page to register your own)
+
+This is a fully working deployment connected to a live backend and database — no local setup needed to try it. See "Local Setup" below if you'd like to run it yourself instead.
+
 ## Setup
 
 1. Install dependencies:
@@ -35,9 +42,9 @@ pages/ -> route-level pages (LoginPage, RegisterPage, DashboardPage)
    cp .env.example .env
 ```
 
-`VITE_API_URL` should point at the backend (defaults to `http://localhost:5000/api`).
+`VITE_API_URL` should point at the backend (defaults to `https://najahak-backend.vercel.app/api`).
 
-3. Make sure the backend is running first (see `backend/README.md`), then start the dev server:
+3. start the dev server:
 
 ```bash
    npm run dev
