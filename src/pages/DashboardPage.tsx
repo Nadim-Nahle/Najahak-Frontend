@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { RequestsTable } from "../components/RequestsTable";
+import { CreateRequestForm } from "../components/CreateRequestForm";
 
 export function DashboardPage() {
   const { user, logout } = useAuth();
@@ -29,6 +30,7 @@ export function DashboardPage() {
       </header>
 
       <main className="p-8">
+        <CreateRequestForm />
         <div className="rounded-lg border border-slate-200 bg-white p-6">
           <RequestsTable />
         </div>
