@@ -1,75 +1,56 @@
-# React + TypeScript + Vite
+# Client Requests Dashboard — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript client for the Client Requests dashboard. Lets a user
+register/log in, view client requests, create new ones, and move each
+one through the workflow: `New -> In Progress -> Done`.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + TypeScript
+- Vite
+- Tailwind CSS (v4)
+- TanStack Query (React Query) — server state, caching, mutations
+- React Router — routing + protected routes
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Install dependencies:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+   npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Create your local environment file:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+   cp .env.example .env
 ```
+
+`VITE_API_URL` should point at the backend (defaults to `http://localhost:5000/api`).
+
+3. Make sure the backend is running first (see `backend/README.md`), then start the dev server:
+
+```bash
+   npm run dev
+```
+
+4. Open the printed local URL (typically `http://localhost:5173`).
+
+## Auth flow
+
+- Visiting the app with no token redirects to `/login`.
+- `/register` creates an account and logs you in immediately.
+- The token is stored in `localStorage` and attached automatically to every API request via `api/client.ts`.
+- `/dashboard` is wrapped in `ProtectedRoute` — redirects back to `/login` if there's no logged-in user.
+
+## Data flow example: updating a request's status
+
+1. `RequestsTable` calls `useUpdateRequestStatus()` (a TanStack Query mutation).
+2. On success, the mutation calls `queryClient.invalidateQueries({ queryKey: ['requests'] })`.
+3. TanStack Query refetches the list automatically, and every component using `useRequests()` re-renders with the fresh data — no manual state syncing.
+
+## Notes on design decisions
+
+- `api/client.ts` is a thin `fetch` wrapper instead of axios — already handles JSON parsing, the `Authorization` header, and typed errors, so an extra dependency wasn't needed.
+- `RequestStatus` is a TypeScript string-literal union, not an enum — maps directly to the exact strings the backend sends/expects.
+- The "next status" workflow is mirrored on the frontend purely for UX (hiding the button once a request is `Done`) — the backend remains the actual source of truth and independently rejects any invalid transition.
