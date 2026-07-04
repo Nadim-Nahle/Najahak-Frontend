@@ -9,15 +9,15 @@ one through the workflow: `New -> In Progress -> Done`.
 - React + TypeScript
 - Vite
 - Tailwind CSS (v4)
-- TanStack Query (React Query) — server state, caching, mutations
-- React Router — routing + protected routes
+- TanStack Query (React Query), server state, caching, mutations
+- React Router, routing + protected routes
 
 ## Live Deployment
 
 - **App:** https://najahak-frontend.vercel.app/
 - **Test account:** `test@test.com` / `123456` (or use the "Create one" link on the login page to register your own)
 
-This is a fully working deployment connected to a live backend and database — no local setup needed to try it. See "Local Setup" below if you'd like to run it yourself instead.
+This is a fully working deployment connected to a live backend and database, no local setup needed to try it. See "Local Setup" below if you'd like to run it yourself instead.
 
 ## Setup
 
