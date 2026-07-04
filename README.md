@@ -48,16 +48,16 @@ This is a fully working deployment connected to a live backend and database, no 
 - Visiting the app with no token redirects to `/login`.
 - `/register` creates an account and logs you in immediately.
 - The token is stored in `localStorage` and attached automatically to every API request via `api/client.ts`.
-- `/dashboard` is wrapped in `ProtectedRoute` — redirects back to `/login` if there's no logged-in user.
+- `/dashboard` is wrapped in `ProtectedRoute`, redirects back to `/login` if there's no logged-in user.
 
 ## Data flow example: updating a request's status
 
 1. `RequestsTable` calls `useUpdateRequestStatus()` (a TanStack Query mutation).
 2. On success, the mutation calls `queryClient.invalidateQueries({ queryKey: ['requests'] })`.
-3. TanStack Query refetches the list automatically, and every component using `useRequests()` re-renders with the fresh data — no manual state syncing.
+3. TanStack Query refetches the list automatically, and every component using `useRequests()` re-renders with the fresh data, no manual state syncing.
 
 ## Notes on design decisions
 
-- `api/client.ts` is a thin `fetch` wrapper instead of axios — already handles JSON parsing, the `Authorization` header, and typed errors, so an extra dependency wasn't needed.
-- `RequestStatus` is a TypeScript string-literal union, not an enum — maps directly to the exact strings the backend sends/expects.
-- The "next status" workflow is mirrored on the frontend purely for UX (hiding the button once a request is `Done`) — the backend remains the actual source of truth and independently rejects any invalid transition.
+- `api/client.ts` is a thin `fetch` wrapper instead of axios, already handles JSON parsing, the `Authorization` header, and typed errors, so an extra dependency wasn't needed.
+- `RequestStatus` is a TypeScript string-literal union, not an enum, maps directly to the exact strings the backend sends/expects.
+- The "next status" workflow is mirrored on the frontend purely for UX (hiding the button once a request is `Done`), the backend remains the actual source of truth and independently rejects any invalid transition.
